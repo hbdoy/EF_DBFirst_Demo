@@ -13,6 +13,7 @@
         <AssociationConnector Association="GSSWEBModel.BOOK_CLASSBOOK_DATA" />
         <AssociationConnector Association="GSSWEBModel.MEMBER_MBOOK_DATA" />
         <AssociationConnector Association="GSSWEBModel.BOOK_DATABOOK_LEND_RECORD" />
+        <AssociationConnector Association="GSSWEBModel.BOOK_CODEBOOK_DATA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -20,7 +20,6 @@
 警告 6002: 資料表/檢視 'GSSWEB.dbo.BOOK_CODE' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="BOOK_CODE">
           <Key>
-            <PropertyRef Name="CODE_TYPE" />
             <PropertyRef Name="CODE_ID" />
           </Key>
           <Property Name="CODE_TYPE" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -56,9 +55,6 @@
         <EntityType Name="BOOK_LEND_RECORD">
           <Key>
             <PropertyRef Name="IDENTITY_FILED" />
-            <PropertyRef Name="BOOK_ID" />
-            <PropertyRef Name="KEEPER_ID" />
-            <PropertyRef Name="LEND_DATE" />
           </Key>
           <Property Name="IDENTITY_FILED" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BOOK_ID" Type="int" Nullable="false" />
@@ -147,6 +143,7 @@
           <NavigationProperty Name="BOOK_CLASS" Relationship="GSSWEBModel.BOOK_CLASSBOOK_DATA" FromRole="BOOK_DATA" ToRole="BOOK_CLASS" />
           <NavigationProperty Name="MEMBER_M" Relationship="GSSWEBModel.MEMBER_MBOOK_DATA" FromRole="BOOK_DATA" ToRole="MEMBER_M" />
           <NavigationProperty Name="BOOK_LEND_RECORD" Relationship="GSSWEBModel.BOOK_DATABOOK_LEND_RECORD" FromRole="BOOK_DATA" ToRole="BOOK_LEND_RECORD" />
+          <NavigationProperty Name="BOOK_CODE" Relationship="GSSWEBModel.BOOK_CODEBOOK_DATA" FromRole="BOOK_DATA" ToRole="BOOK_CODE" />
         </EntityType>
         <EntityType Name="MEMBER_M">
           <Key>
@@ -163,7 +160,6 @@
         </EntityType>
         <EntityType Name="BOOK_CODE">
           <Key>
-            <PropertyRef Name="CODE_TYPE" />
             <PropertyRef Name="CODE_ID" />
           </Key>
           <Property Name="CODE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
@@ -174,13 +170,11 @@
           <Property Name="CREATE_USER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="MODIFY_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFY_USER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BOOK_DATA" Relationship="GSSWEBModel.BOOK_CODEBOOK_DATA" FromRole="BOOK_CODE" ToRole="BOOK_DATA" />
         </EntityType>
         <EntityType Name="BOOK_LEND_RECORD">
           <Key>
             <PropertyRef Name="IDENTITY_FILED" />
-            <PropertyRef Name="BOOK_ID" />
-            <PropertyRef Name="KEEPER_ID" />
-            <PropertyRef Name="LEND_DATE" />
           </Key>
           <Property Name="IDENTITY_FILED" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BOOK_ID" Type="Int32" Nullable="false" />
@@ -209,6 +203,10 @@
           <AssociationSet Name="BOOK_DATABOOK_LEND_RECORD" Association="GSSWEBModel.BOOK_DATABOOK_LEND_RECORD">
             <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
             <End Role="BOOK_LEND_RECORD" EntitySet="BOOK_LEND_RECORD" />
+          </AssociationSet>
+          <AssociationSet Name="BOOK_CODEBOOK_DATA" Association="GSSWEBModel.BOOK_CODEBOOK_DATA">
+            <End Role="BOOK_CODE" EntitySet="BOOK_CODE" />
+            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="BOOK_CLASSBOOK_DATA">
@@ -244,6 +242,18 @@
             </Principal>
             <Dependent Role="BOOK_LEND_RECORD">
               <PropertyRef Name="BOOK_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="BOOK_CODEBOOK_DATA">
+          <End Type="GSSWEBModel.BOOK_CODE" Role="BOOK_CODE" Multiplicity="1" />
+          <End Type="GSSWEBModel.BOOK_DATA" Role="BOOK_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOOK_CODE">
+              <PropertyRef Name="CODE_ID" />
+            </Principal>
+            <Dependent Role="BOOK_DATA">
+              <PropertyRef Name="BOOK_STATUS" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
