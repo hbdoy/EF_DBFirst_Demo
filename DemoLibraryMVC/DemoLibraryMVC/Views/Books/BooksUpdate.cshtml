@@ -1,0 +1,196 @@
+﻿@model Library.Models.Books
+
+@{
+    ViewBag.Title = "書籍修改";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="c_text">@ViewBag.Title</h2>
+@if (ViewBag.UpdateMessage != null)
+{
+    <script>alert("@ViewBag.UpdateMessage") </script>
+}
+
+
+@using (Html.BeginForm(new { id = Model.BookId }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            <div class="control-label col-md-2 c_text">
+                <span class="text-danger ">*</span>
+                @Html.LabelFor(model => model.BookName)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BookName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BookName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-md-2 c_text">
+                <span class="text-danger ">*</span>
+                @Html.LabelFor(model => model.BookAuthor)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BookAuthor, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BookAuthor, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-md-2 c_text">
+                <span class="text-danger ">*</span>
+                @Html.LabelFor(model => model.BookPublisher)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BookPublisher, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BookPublisher, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-md-2 c_text">
+                <span class="text-danger ">*</span>
+                @Html.LabelFor(model => model.BookNote)
+            </div>
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.BookNote, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BookNote, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-md-2 c_text">
+                <span class="text-danger ">*</span>
+                @Html.LabelFor(model => model.BookBougthDate)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BookBougthDate, new { @type = "date", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BookBougthDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-md-2 c_text">
+                <span class="text-danger ">*</span>
+                @Html.LabelFor(model => model.BookClass)
+            </div>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BookClassId, (List<SelectListItem>)ViewBag.BookClass,
+                                                     "--請選擇類別--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BookClassId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="control-label col-md-2 c_text">
+                <span class="text-danger ">*</span>
+                @Html.LabelFor(model => model.BookStatus)
+            </div>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BookStatusCode, (List<SelectListItem>)ViewBag.BookStatus
+                                                                , "-- 請選擇 --", new { @class = "form-control ddl_lend_valid", @id="ddl_status" })
+                @Html.ValidationMessageFor(model => model.BookStatusCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div id="form_keeper" class="form-group">
+            <div class="control-label col-md-2 c_text">
+                <span id="required_keeper" class="text-danger ">*</span>
+                @Html.LabelFor(model => model.Keeper)
+            </div>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.KeeperId, (List<SelectListItem>)ViewBag.Member
+                                                                , "-- 請選擇 --", new { @class = "form-control ddl_lend_valid",})
+                @if (ViewBag.keeperAlarm != null)
+                {
+                    <label id="valid_lend" class="text-danger">@ViewBag.UpdateMessage </label>
+                    
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-10 c_text text-danger">
+                <span class="">*</span>
+                <span>為必填</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="存檔" class="btn btn-success c_text" />
+                <a class="btnDelete btn btn-danger" href="#" book_id="@Model.BookId">刪除</a>
+                
+            </div>
+        </div>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("返回查詢", "Index")
+</div>
+<script>
+    $(document).ready(function () {
+        //檢查借閱狀態，已借出顯示借閱人
+        CheckBookStatus();
+        $("#ddl_status").change(function () {
+            CheckBookStatus();
+        });
+        //刪除功能
+        $(".btnDelete").click(function (e) {
+            e.preventDefault();
+
+            var tr = $(this).closest('tr');
+            var bookId = $(this).attr("book_id");
+            DeleteBooks(tr, bookId);
+            return false;
+        });
+        $(".ddl_lend_valid").change(function () {
+            $("#valid_lend").remove();
+        })
+    })
+
+    //檢查借閱狀態，已借出顯示借閱人
+    function CheckBookStatus() {
+        var status = $("#ddl_status").val();
+        if (status == "C" || status == "B") {
+            $("#KeeperId").removeAttr("disabled");
+            $("#required_keeper").show();
+        }
+        else {
+            $("#required_keeper").hide();
+            $("#KeeperId").val(null);
+            $("#KeeperId").attr("disabled", "disabled");
+        }
+    }
+
+    //刪除書籍
+    function DeleteBooks(tr, bookId) {
+        if (confirm("確定要刪除嗎")) {
+
+            $.ajax({
+                type: "POST",
+                url: "/Books/BooksDelete",
+                data: "BookId=" + bookId,
+                dataType: "json",
+                success: function (response) {
+                    alert(response.message);
+                    if (response.isDelete)
+                        window.location.href = "/Books/Index";
+                }, error: function (error) {
+                    alert("系統發生錯誤");
+                }
+            });
+        }
+
+    }
+</script>

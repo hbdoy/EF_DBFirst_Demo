@@ -1,0 +1,16 @@
+﻿.long_textbox{
+    max-width:400px;
+}
+
+.c_text {
+    font-family: "微軟正黑體";
+}
+
+.e_text {
+    font-family: Calibri;
+}
+
+.ce_text {
+    font-family: "微軟正黑體",Calibri;
+}
+
