@@ -1,0 +1,105 @@
+﻿@model IEnumerable<DemoLibraryMVC.Models.BOOK_DATA>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BOOK_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BOOK_CLASS_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BOOK_AUTHOR)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BOOK_BOUGHT_DATE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BOOK_PUBLISHER)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BOOK_NOTE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BOOK_STATUS)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BOOK_KEEPER)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BOOK_AMOUNT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CREATE_DATE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CREATE_USER)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MODIFY_DATE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MODIFY_USER)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BOOK_NAME)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BOOK_CLASS_ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BOOK_AUTHOR)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BOOK_BOUGHT_DATE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BOOK_PUBLISHER)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BOOK_NOTE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BOOK_STATUS)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BOOK_KEEPER)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BOOK_AMOUNT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CREATE_DATE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CREATE_USER)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MODIFY_DATE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MODIFY_USER)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.BOOK_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.BOOK_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.BOOK_ID })
+        </td>
+    </tr>
+}
+
+</table>

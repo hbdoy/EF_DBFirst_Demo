@@ -1,0 +1,128 @@
+﻿@model DemoLibraryMVC.Models.BOOK_DATA
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>BOOK_DATA</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BOOK_NAME)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BOOK_NAME)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BOOK_CLASS_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BOOK_CLASS_ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BOOK_AUTHOR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BOOK_AUTHOR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BOOK_BOUGHT_DATE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BOOK_BOUGHT_DATE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BOOK_PUBLISHER)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BOOK_PUBLISHER)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BOOK_NOTE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BOOK_NOTE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BOOK_STATUS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BOOK_STATUS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BOOK_KEEPER)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BOOK_KEEPER)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BOOK_AMOUNT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BOOK_AMOUNT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CREATE_DATE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CREATE_DATE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CREATE_USER)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CREATE_USER)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MODIFY_DATE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MODIFY_DATE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MODIFY_USER)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MODIFY_USER)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
