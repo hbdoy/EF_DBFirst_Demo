@@ -5,14 +5,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0b81b22330534110b801a7bb78abccf4" Name="Diagram1">
-        <EntityTypeShape EntityType="GSSWEBModel.BOOK_CLASS" Width="1.875" PointX="0.75" PointY="7" />
-        <EntityTypeShape EntityType="GSSWEBModel.BOOK_CODE" Width="1.875" PointX="0.75" PointY="1.75" />
+        <EntityTypeShape EntityType="GSSWEBModel.BOOK_CLASS" Width="1.875" PointX="0.75" PointY="9.625" />
+        <EntityTypeShape EntityType="GSSWEBModel.BOOK_CODE" Width="1.875" PointX="0.75" PointY="1.875" />
         <EntityTypeShape EntityType="GSSWEBModel.BOOK_DATA" Width="1.875" PointX="3.375" PointY="1" />
-        <EntityTypeShape EntityType="GSSWEBModel.MEMBER_M" Width="1.875" PointX="5.75" PointY="5.75" />
-        <EntityTypeShape EntityType="GSSWEBModel.BOOK_LEND_RECORD" Width="1.875" PointX="6" PointY="1.75" />
+        <EntityTypeShape EntityType="GSSWEBModel.MEMBER_M" Width="1.875" PointX="0.75" PointY="6.375" />
+        <EntityTypeShape EntityType="GSSWEBModel.BOOK_LEND_RECORD" Width="1.875" PointX="6" PointY="1.875" />
         <AssociationConnector Association="GSSWEBModel.FK_BOOK_DATA_BOOK_CLASS" />
         <AssociationConnector Association="GSSWEBModel.FK_BOOK_DATA_BOOK_CODE" />
         <AssociationConnector Association="GSSWEBModel.FK_BOOK_LEND_RECORD_BOOK_DATA" />
+        <AssociationConnector Association="GSSWEBModel.FK_BOOK_DATA_MEMBER_M" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

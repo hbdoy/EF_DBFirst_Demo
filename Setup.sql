@@ -8,8 +8,7 @@ GO
 
 USE [GSSWEB]
 GO
-
-/****** Object:  Table [dbo].[BOOK_CLASS]    Script Date: 2020/3/11 上午 02:08:38 ******/
+/****** Object:  Table [dbo].[BOOK_CLASS]    Script Date: 2020/3/11 上午 04:23:37 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -28,7 +27,7 @@ CREATE TABLE [dbo].[BOOK_CLASS](
 ) ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[BOOK_CODE]    Script Date: 2020/3/11 上午 02:08:38 ******/
+/****** Object:  Table [dbo].[BOOK_CODE]    Script Date: 2020/3/11 上午 04:23:37 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -49,7 +48,7 @@ CREATE TABLE [dbo].[BOOK_CODE](
 ) ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[BOOK_DATA]    Script Date: 2020/3/11 上午 02:08:38 ******/
+/****** Object:  Table [dbo].[BOOK_DATA]    Script Date: 2020/3/11 上午 04:23:37 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -76,7 +75,7 @@ CREATE TABLE [dbo].[BOOK_DATA](
 ) ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[BOOK_LEND_RECORD]    Script Date: 2020/3/11 上午 02:08:38 ******/
+/****** Object:  Table [dbo].[BOOK_LEND_RECORD]    Script Date: 2020/3/11 上午 04:23:37 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -93,7 +92,7 @@ CREATE TABLE [dbo].[BOOK_LEND_RECORD](
 ) ON [PRIMARY]
 GO
 
-/****** Object:  Table [dbo].[MEMBER_M]    Script Date: 2020/3/11 上午 02:08:38 ******/
+/****** Object:  Table [dbo].[MEMBER_M]    Script Date: 2020/3/11 上午 04:23:37 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -122,6 +121,11 @@ ALTER TABLE [dbo].[BOOK_DATA]  WITH CHECK ADD  CONSTRAINT [FK_BOOK_DATA_BOOK_COD
 REFERENCES [dbo].[BOOK_CODE] ([CODE_ID])
 GO
 ALTER TABLE [dbo].[BOOK_DATA] CHECK CONSTRAINT [FK_BOOK_DATA_BOOK_CODE]
+GO
+ALTER TABLE [dbo].[BOOK_DATA]  WITH NOCHECK ADD  CONSTRAINT [FK_BOOK_DATA_MEMBER_M] FOREIGN KEY([BOOK_KEEPER])
+REFERENCES [dbo].[MEMBER_M] ([USER_ID])
+GO
+ALTER TABLE [dbo].[BOOK_DATA] CHECK CONSTRAINT [FK_BOOK_DATA_MEMBER_M]
 GO
 ALTER TABLE [dbo].[BOOK_LEND_RECORD]  WITH CHECK ADD  CONSTRAINT [FK_BOOK_LEND_RECORD_BOOK_DATA] FOREIGN KEY([BOOK_ID])
 REFERENCES [dbo].[BOOK_DATA] ([BOOK_ID])

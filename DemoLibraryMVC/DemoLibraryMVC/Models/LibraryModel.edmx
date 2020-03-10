@@ -102,6 +102,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_BOOK_DATA_MEMBER_M">
+          <End Role="MEMBER_M" Type="Self.MEMBER_M" Multiplicity="0..1" />
+          <End Role="BOOK_DATA" Type="Self.BOOK_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBER_M">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="BOOK_DATA">
+              <PropertyRef Name="BOOK_KEEPER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_BOOK_LEND_RECORD_BOOK_DATA">
           <End Role="BOOK_DATA" Type="Self.BOOK_DATA" Multiplicity="1" />
           <End Role="BOOK_LEND_RECORD" Type="Self.BOOK_LEND_RECORD" Multiplicity="*" />
@@ -139,6 +151,10 @@
             <End Role="BOOK_CODE" EntitySet="BOOK_CODE" />
             <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
           </AssociationSet>
+          <AssociationSet Name="FK_BOOK_DATA_MEMBER_M" Association="Self.FK_BOOK_DATA_MEMBER_M">
+            <End Role="MEMBER_M" EntitySet="MEMBER_M" />
+            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
+          </AssociationSet>
           <AssociationSet Name="FK_BOOK_LEND_RECORD_BOOK_DATA" Association="Self.FK_BOOK_LEND_RECORD_BOOK_DATA">
             <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
             <End Role="BOOK_LEND_RECORD" EntitySet="BOOK_LEND_RECORD" />
@@ -165,6 +181,10 @@
           <AssociationSet Name="FK_BOOK_LEND_RECORD_BOOK_DATA" Association="GSSWEBModel.FK_BOOK_LEND_RECORD_BOOK_DATA">
             <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
             <End Role="BOOK_LEND_RECORD" EntitySet="BOOK_LEND_RECORD" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BOOK_DATA_MEMBER_M" Association="GSSWEBModel.FK_BOOK_DATA_MEMBER_M">
+            <End Role="MEMBER_M" EntitySet="MEMBER_M" />
+            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="BOOK_CLASS">
@@ -214,6 +234,7 @@
           <NavigationProperty Name="BOOK_CLASS" Relationship="GSSWEBModel.FK_BOOK_DATA_BOOK_CLASS" FromRole="BOOK_DATA" ToRole="BOOK_CLASS" />
           <NavigationProperty Name="BOOK_CODE" Relationship="GSSWEBModel.FK_BOOK_DATA_BOOK_CODE" FromRole="BOOK_DATA" ToRole="BOOK_CODE" />
           <NavigationProperty Name="BOOK_LEND_RECORD" Relationship="GSSWEBModel.FK_BOOK_LEND_RECORD_BOOK_DATA" FromRole="BOOK_DATA" ToRole="BOOK_LEND_RECORD" />
+          <NavigationProperty Name="MEMBER_M" Relationship="GSSWEBModel.FK_BOOK_DATA_MEMBER_M" FromRole="BOOK_DATA" ToRole="MEMBER_M" />
         </EntityType>
         <EntityType Name="MEMBER_M">
           <Key>
@@ -226,6 +247,7 @@
           <Property Name="CREATE_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="MODIFY_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFY_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BOOK_DATA" Relationship="GSSWEBModel.FK_BOOK_DATA_MEMBER_M" FromRole="MEMBER_M" ToRole="BOOK_DATA" />
         </EntityType>
         <EntityType Name="BOOK_LEND_RECORD">
           <Key>
@@ -277,6 +299,18 @@
             </Principal>
             <Dependent Role="BOOK_LEND_RECORD">
               <PropertyRef Name="BOOK_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BOOK_DATA_MEMBER_M">
+          <End Type="GSSWEBModel.MEMBER_M" Role="MEMBER_M" Multiplicity="0..1" />
+          <End Type="GSSWEBModel.BOOK_DATA" Role="BOOK_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MEMBER_M">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="BOOK_DATA">
+              <PropertyRef Name="BOOK_KEEPER" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

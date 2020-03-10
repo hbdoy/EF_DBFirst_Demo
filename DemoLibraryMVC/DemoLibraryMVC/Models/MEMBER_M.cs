@@ -14,6 +14,12 @@ namespace DemoLibraryMVC.Models
     
     public partial class MEMBER_M
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public MEMBER_M()
+        {
+            this.BOOK_DATA = new HashSet<BOOK_DATA>();
+        }
+    
         public string USER_ID { get; set; }
         public string USER_CNAME { get; set; }
         public string USER_ENAME { get; set; }
@@ -21,5 +27,8 @@ namespace DemoLibraryMVC.Models
         public string CREATE_USER { get; set; }
         public Nullable<System.DateTime> MODIFY_DATE { get; set; }
         public string MODIFY_USER { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BOOK_DATA> BOOK_DATA { get; set; }
     }
 }
