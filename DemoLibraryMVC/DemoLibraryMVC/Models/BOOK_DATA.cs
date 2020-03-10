@@ -36,9 +36,8 @@ namespace DemoLibraryMVC.Models
         public string MODIFY_USER { get; set; }
     
         public virtual BOOK_CLASS BOOK_CLASS { get; set; }
-        public virtual MEMBER_M MEMBER_M { get; set; }
+        public virtual BOOK_CODE BOOK_CODE { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BOOK_LEND_RECORD> BOOK_LEND_RECORD { get; set; }
-        public virtual BOOK_CODE BOOK_CODE { get; set; }
     }
 }

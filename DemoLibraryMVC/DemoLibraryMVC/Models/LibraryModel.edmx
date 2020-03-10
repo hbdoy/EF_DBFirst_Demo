@@ -16,14 +16,12 @@
           <Property Name="MODIFY_DATE" Type="datetime" />
           <Property Name="MODIFY_USER" Type="nvarchar" MaxLength="12" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'GSSWEB.dbo.BOOK_CODE' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="BOOK_CODE">
           <Key>
             <PropertyRef Name="CODE_ID" />
           </Key>
-          <Property Name="CODE_TYPE" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CODE_ID" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CODE_TYPE" Type="nvarchar" MaxLength="50" />
+          <Property Name="CODE_ID" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="CODE_TYPE_DESC" Type="nvarchar" MaxLength="200" />
           <Property Name="CODE_NAME" Type="nvarchar" MaxLength="200" />
           <Property Name="CREATE_DATE" Type="datetime" />
@@ -55,6 +53,9 @@
         <EntityType Name="BOOK_LEND_RECORD">
           <Key>
             <PropertyRef Name="IDENTITY_FILED" />
+            <PropertyRef Name="BOOK_ID" />
+            <PropertyRef Name="KEEPER_ID" />
+            <PropertyRef Name="LEND_DATE" />
           </Key>
           <Property Name="IDENTITY_FILED" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BOOK_ID" Type="int" Nullable="false" />
@@ -77,22 +78,47 @@
           <Property Name="MODIFY_DATE" Type="datetime" />
           <Property Name="MODIFY_USER" Type="nvarchar" MaxLength="12" />
         </EntityType>
+        <Association Name="FK_BOOK_DATA_BOOK_CLASS">
+          <End Role="BOOK_CLASS" Type="Self.BOOK_CLASS" Multiplicity="1" />
+          <End Role="BOOK_DATA" Type="Self.BOOK_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOOK_CLASS">
+              <PropertyRef Name="BOOK_CLASS_ID" />
+            </Principal>
+            <Dependent Role="BOOK_DATA">
+              <PropertyRef Name="BOOK_CLASS_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BOOK_DATA_BOOK_CODE">
+          <End Role="BOOK_CODE" Type="Self.BOOK_CODE" Multiplicity="1" />
+          <End Role="BOOK_DATA" Type="Self.BOOK_DATA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOOK_CODE">
+              <PropertyRef Name="CODE_ID" />
+            </Principal>
+            <Dependent Role="BOOK_DATA">
+              <PropertyRef Name="BOOK_STATUS" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BOOK_LEND_RECORD_BOOK_DATA">
+          <End Role="BOOK_DATA" Type="Self.BOOK_DATA" Multiplicity="1" />
+          <End Role="BOOK_LEND_RECORD" Type="Self.BOOK_LEND_RECORD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOOK_DATA">
+              <PropertyRef Name="BOOK_ID" />
+            </Principal>
+            <Dependent Role="BOOK_LEND_RECORD">
+              <PropertyRef Name="BOOK_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="GSSWEBModelStoreContainer">
           <EntitySet Name="BOOK_CLASS" EntityType="Self.BOOK_CLASS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOOK_CODE" EntityType="Self.BOOK_CODE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BOOK_DATA" EntityType="Self.BOOK_DATA" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MEMBER_M" EntityType="Self.MEMBER_M" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="BOOK_CODE" EntityType="Self.BOOK_CODE" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [BOOK_CODE].[CODE_TYPE] AS [CODE_TYPE], 
-    [BOOK_CODE].[CODE_ID] AS [CODE_ID], 
-    [BOOK_CODE].[CODE_TYPE_DESC] AS [CODE_TYPE_DESC], 
-    [BOOK_CODE].[CODE_NAME] AS [CODE_NAME], 
-    [BOOK_CODE].[CREATE_DATE] AS [CREATE_DATE], 
-    [BOOK_CODE].[CREATE_USER] AS [CREATE_USER], 
-    [BOOK_CODE].[MODIFY_DATE] AS [MODIFY_DATE], 
-    [BOOK_CODE].[MODIFY_USER] AS [MODIFY_USER]
-    FROM [dbo].[BOOK_CODE] AS [BOOK_CODE]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="BOOK_LEND_RECORD" EntityType="Self.BOOK_LEND_RECORD" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [BOOK_LEND_RECORD].[IDENTITY_FILED] AS [IDENTITY_FILED], 
@@ -105,111 +131,120 @@
     [BOOK_LEND_RECORD].[MOD_USR] AS [MOD_USR]
     FROM [dbo].[BOOK_LEND_RECORD] AS [BOOK_LEND_RECORD]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_BOOK_DATA_BOOK_CLASS" Association="Self.FK_BOOK_DATA_BOOK_CLASS">
+            <End Role="BOOK_CLASS" EntitySet="BOOK_CLASS" />
+            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BOOK_DATA_BOOK_CODE" Association="Self.FK_BOOK_DATA_BOOK_CODE">
+            <End Role="BOOK_CODE" EntitySet="BOOK_CODE" />
+            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BOOK_LEND_RECORD_BOOK_DATA" Association="Self.FK_BOOK_LEND_RECORD_BOOK_DATA">
+            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
+            <End Role="BOOK_LEND_RECORD" EntitySet="BOOK_LEND_RECORD" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GSSWEBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="GSSWEBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BOOK_CLASS" EntityType="GSSWEBModel.BOOK_CLASS" />
+          <EntitySet Name="BOOK_CODE" EntityType="GSSWEBModel.BOOK_CODE" />
+          <EntitySet Name="BOOK_DATA" EntityType="GSSWEBModel.BOOK_DATA" />
+          <EntitySet Name="MEMBER_M" EntityType="GSSWEBModel.MEMBER_M" />
+          <EntitySet Name="BOOK_LEND_RECORD" EntityType="GSSWEBModel.BOOK_LEND_RECORD" />
+          <AssociationSet Name="FK_BOOK_DATA_BOOK_CLASS" Association="GSSWEBModel.FK_BOOK_DATA_BOOK_CLASS">
+            <End Role="BOOK_CLASS" EntitySet="BOOK_CLASS" />
+            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BOOK_DATA_BOOK_CODE" Association="GSSWEBModel.FK_BOOK_DATA_BOOK_CODE">
+            <End Role="BOOK_CODE" EntitySet="BOOK_CODE" />
+            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BOOK_LEND_RECORD_BOOK_DATA" Association="GSSWEBModel.FK_BOOK_LEND_RECORD_BOOK_DATA">
+            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
+            <End Role="BOOK_LEND_RECORD" EntitySet="BOOK_LEND_RECORD" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="BOOK_CLASS">
           <Key>
             <PropertyRef Name="BOOK_CLASS_ID" />
           </Key>
-          <Property Name="BOOK_CLASS_ID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BOOK_CLASS_NAME" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BOOK_CLASS_ID" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="BOOK_CLASS_NAME" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="true" />
           <Property Name="CREATE_DATE" Type="DateTime" Precision="3" />
           <Property Name="CREATE_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="MODIFY_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFY_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BOOK_DATA" Relationship="GSSWEBModel.BOOK_CLASSBOOK_DATA" FromRole="BOOK_CLASS" ToRole="BOOK_DATA" />
-        </EntityType>
-        <EntityType Name="BOOK_DATA">
-          <Key>
-            <PropertyRef Name="BOOK_ID" />
-          </Key>
-          <Property Name="BOOK_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BOOK_NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BOOK_CLASS_ID" Type="String" MaxLength="4" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BOOK_AUTHOR" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="BOOK_BOUGHT_DATE" Type="DateTime" Precision="3" />
-          <Property Name="BOOK_PUBLISHER" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="BOOK_NOTE" Type="String" MaxLength="1200" FixedLength="false" Unicode="true" />
-          <Property Name="BOOK_STATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="BOOK_KEEPER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
-          <Property Name="BOOK_AMOUNT" Type="Int32" />
-          <Property Name="CREATE_DATE" Type="DateTime" Precision="3" />
-          <Property Name="CREATE_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFY_DATE" Type="DateTime" Precision="3" />
-          <Property Name="MODIFY_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BOOK_CLASS" Relationship="GSSWEBModel.BOOK_CLASSBOOK_DATA" FromRole="BOOK_DATA" ToRole="BOOK_CLASS" />
-          <NavigationProperty Name="MEMBER_M" Relationship="GSSWEBModel.MEMBER_MBOOK_DATA" FromRole="BOOK_DATA" ToRole="MEMBER_M" />
-          <NavigationProperty Name="BOOK_LEND_RECORD" Relationship="GSSWEBModel.BOOK_DATABOOK_LEND_RECORD" FromRole="BOOK_DATA" ToRole="BOOK_LEND_RECORD" />
-          <NavigationProperty Name="BOOK_CODE" Relationship="GSSWEBModel.BOOK_CODEBOOK_DATA" FromRole="BOOK_DATA" ToRole="BOOK_CODE" />
-        </EntityType>
-        <EntityType Name="MEMBER_M">
-          <Key>
-            <PropertyRef Name="USER_ID" />
-          </Key>
-          <Property Name="USER_ID" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="USER_CNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="USER_ENAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CREATE_DATE" Type="DateTime" Precision="3" />
-          <Property Name="CREATE_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
-          <Property Name="MODIFY_DATE" Type="DateTime" Precision="3" />
-          <Property Name="MODIFY_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BOOK_DATA" Relationship="GSSWEBModel.MEMBER_MBOOK_DATA" FromRole="MEMBER_M" ToRole="BOOK_DATA" />
+          <NavigationProperty Name="BOOK_DATA" Relationship="GSSWEBModel.FK_BOOK_DATA_BOOK_CLASS" FromRole="BOOK_CLASS" ToRole="BOOK_DATA" />
         </EntityType>
         <EntityType Name="BOOK_CODE">
           <Key>
             <PropertyRef Name="CODE_ID" />
           </Key>
-          <Property Name="CODE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CODE_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CODE_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CODE_ID" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="CODE_TYPE_DESC" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CODE_NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="CREATE_DATE" Type="DateTime" Precision="3" />
           <Property Name="CREATE_USER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="MODIFY_DATE" Type="DateTime" Precision="3" />
           <Property Name="MODIFY_USER" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BOOK_DATA" Relationship="GSSWEBModel.BOOK_CODEBOOK_DATA" FromRole="BOOK_CODE" ToRole="BOOK_DATA" />
+          <NavigationProperty Name="BOOK_DATA" Relationship="GSSWEBModel.FK_BOOK_DATA_BOOK_CODE" FromRole="BOOK_CODE" ToRole="BOOK_DATA" />
+        </EntityType>
+        <EntityType Name="BOOK_DATA">
+          <Key>
+            <PropertyRef Name="BOOK_ID" />
+          </Key>
+          <Property Name="BOOK_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BOOK_NAME" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BOOK_CLASS_ID" Type="String" Nullable="false" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="BOOK_AUTHOR" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="BOOK_BOUGHT_DATE" Type="DateTime" Precision="3" />
+          <Property Name="BOOK_PUBLISHER" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="BOOK_NOTE" Type="String" MaxLength="1200" FixedLength="false" Unicode="true" />
+          <Property Name="BOOK_STATUS" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="BOOK_KEEPER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="BOOK_AMOUNT" Type="Int32" />
+          <Property Name="CREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="CREATE_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFY_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFY_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BOOK_CLASS" Relationship="GSSWEBModel.FK_BOOK_DATA_BOOK_CLASS" FromRole="BOOK_DATA" ToRole="BOOK_CLASS" />
+          <NavigationProperty Name="BOOK_CODE" Relationship="GSSWEBModel.FK_BOOK_DATA_BOOK_CODE" FromRole="BOOK_DATA" ToRole="BOOK_CODE" />
+          <NavigationProperty Name="BOOK_LEND_RECORD" Relationship="GSSWEBModel.FK_BOOK_LEND_RECORD_BOOK_DATA" FromRole="BOOK_DATA" ToRole="BOOK_LEND_RECORD" />
+        </EntityType>
+        <EntityType Name="MEMBER_M">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+          </Key>
+          <Property Name="USER_ID" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="USER_CNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="USER_ENAME" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="CREATE_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="MODIFY_DATE" Type="DateTime" Precision="3" />
+          <Property Name="MODIFY_USER" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="BOOK_LEND_RECORD">
           <Key>
             <PropertyRef Name="IDENTITY_FILED" />
+            <PropertyRef Name="BOOK_ID" />
+            <PropertyRef Name="KEEPER_ID" />
+            <PropertyRef Name="LEND_DATE" />
           </Key>
           <Property Name="IDENTITY_FILED" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BOOK_ID" Type="Int32" Nullable="false" />
-          <Property Name="KEEPER_ID" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="KEEPER_ID" Type="String" Nullable="false" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="LEND_DATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CRE_DATE" Type="DateTime" Precision="3" />
           <Property Name="CRE_USR" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="MOD_DATE" Type="DateTime" Precision="3" />
           <Property Name="MOD_USR" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BOOK_DATA" Relationship="GSSWEBModel.BOOK_DATABOOK_LEND_RECORD" FromRole="BOOK_LEND_RECORD" ToRole="BOOK_DATA" />
+          <NavigationProperty Name="BOOK_DATA" Relationship="GSSWEBModel.FK_BOOK_LEND_RECORD_BOOK_DATA" FromRole="BOOK_LEND_RECORD" ToRole="BOOK_DATA" />
         </EntityType>
-        <EntityContainer Name="GSSWEBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="BOOK_CLASS" EntityType="Self.BOOK_CLASS" />
-          <EntitySet Name="BOOK_DATA" EntityType="Self.BOOK_DATA" />
-          <EntitySet Name="MEMBER_M" EntityType="Self.MEMBER_M" />
-          <EntitySet Name="BOOK_CODE" EntityType="Self.BOOK_CODE" />
-          <EntitySet Name="BOOK_LEND_RECORD" EntityType="Self.BOOK_LEND_RECORD" />
-          <AssociationSet Name="BOOK_CLASSBOOK_DATA" Association="GSSWEBModel.BOOK_CLASSBOOK_DATA">
-            <End Role="BOOK_CLASS" EntitySet="BOOK_CLASS" />
-            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
-          </AssociationSet>
-          <AssociationSet Name="MEMBER_MBOOK_DATA" Association="GSSWEBModel.MEMBER_MBOOK_DATA">
-            <End Role="MEMBER_M" EntitySet="MEMBER_M" />
-            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
-          </AssociationSet>
-          <AssociationSet Name="BOOK_DATABOOK_LEND_RECORD" Association="GSSWEBModel.BOOK_DATABOOK_LEND_RECORD">
-            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
-            <End Role="BOOK_LEND_RECORD" EntitySet="BOOK_LEND_RECORD" />
-          </AssociationSet>
-          <AssociationSet Name="BOOK_CODEBOOK_DATA" Association="GSSWEBModel.BOOK_CODEBOOK_DATA">
-            <End Role="BOOK_CODE" EntitySet="BOOK_CODE" />
-            <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
-          </AssociationSet>
-        </EntityContainer>
-        <Association Name="BOOK_CLASSBOOK_DATA">
+        <Association Name="FK_BOOK_DATA_BOOK_CLASS">
           <End Type="GSSWEBModel.BOOK_CLASS" Role="BOOK_CLASS" Multiplicity="1" />
           <End Type="GSSWEBModel.BOOK_DATA" Role="BOOK_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -221,31 +256,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="MEMBER_MBOOK_DATA">
-          <End Type="GSSWEBModel.MEMBER_M" Role="MEMBER_M" Multiplicity="0..1" />
-          <End Type="GSSWEBModel.BOOK_DATA" Role="BOOK_DATA" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MEMBER_M">
-              <PropertyRef Name="USER_ID" />
-            </Principal>
-            <Dependent Role="BOOK_DATA">
-              <PropertyRef Name="BOOK_KEEPER" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="BOOK_DATABOOK_LEND_RECORD">
-          <End Type="GSSWEBModel.BOOK_DATA" Role="BOOK_DATA" Multiplicity="1" />
-          <End Type="GSSWEBModel.BOOK_LEND_RECORD" Role="BOOK_LEND_RECORD" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BOOK_DATA">
-              <PropertyRef Name="BOOK_ID" />
-            </Principal>
-            <Dependent Role="BOOK_LEND_RECORD">
-              <PropertyRef Name="BOOK_ID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="BOOK_CODEBOOK_DATA">
+        <Association Name="FK_BOOK_DATA_BOOK_CODE">
           <End Type="GSSWEBModel.BOOK_CODE" Role="BOOK_CODE" Multiplicity="1" />
           <End Type="GSSWEBModel.BOOK_DATA" Role="BOOK_DATA" Multiplicity="*" />
           <ReferentialConstraint>
@@ -257,7 +268,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="FK_BOOK_LEND_RECORD_BOOK_DATA">
+          <End Type="GSSWEBModel.BOOK_DATA" Role="BOOK_DATA" Multiplicity="1" />
+          <End Type="GSSWEBModel.BOOK_LEND_RECORD" Role="BOOK_LEND_RECORD" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BOOK_DATA">
+              <PropertyRef Name="BOOK_ID" />
+            </Principal>
+            <Dependent Role="BOOK_LEND_RECORD">
+              <PropertyRef Name="BOOK_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -266,73 +289,73 @@
           <EntitySetMapping Name="BOOK_CLASS">
             <EntityTypeMapping TypeName="GSSWEBModel.BOOK_CLASS">
               <MappingFragment StoreEntitySet="BOOK_CLASS">
-                <ScalarProperty Name="BOOK_CLASS_ID" ColumnName="BOOK_CLASS_ID" />
+                <ScalarProperty Name="MODIFY_USER" ColumnName="MODIFY_USER" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
                 <ScalarProperty Name="BOOK_CLASS_NAME" ColumnName="BOOK_CLASS_NAME" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFY_USER" ColumnName="MODIFY_USER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="BOOK_DATA">
-            <EntityTypeMapping TypeName="GSSWEBModel.BOOK_DATA">
-              <MappingFragment StoreEntitySet="BOOK_DATA">
-                <ScalarProperty Name="BOOK_ID" ColumnName="BOOK_ID" />
-                <ScalarProperty Name="BOOK_NAME" ColumnName="BOOK_NAME" />
                 <ScalarProperty Name="BOOK_CLASS_ID" ColumnName="BOOK_CLASS_ID" />
-                <ScalarProperty Name="BOOK_AUTHOR" ColumnName="BOOK_AUTHOR" />
-                <ScalarProperty Name="BOOK_BOUGHT_DATE" ColumnName="BOOK_BOUGHT_DATE" />
-                <ScalarProperty Name="BOOK_PUBLISHER" ColumnName="BOOK_PUBLISHER" />
-                <ScalarProperty Name="BOOK_NOTE" ColumnName="BOOK_NOTE" />
-                <ScalarProperty Name="BOOK_STATUS" ColumnName="BOOK_STATUS" />
-                <ScalarProperty Name="BOOK_KEEPER" ColumnName="BOOK_KEEPER" />
-                <ScalarProperty Name="BOOK_AMOUNT" ColumnName="BOOK_AMOUNT" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFY_USER" ColumnName="MODIFY_USER" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MEMBER_M">
-            <EntityTypeMapping TypeName="GSSWEBModel.MEMBER_M">
-              <MappingFragment StoreEntitySet="MEMBER_M">
-                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
-                <ScalarProperty Name="USER_CNAME" ColumnName="USER_CNAME" />
-                <ScalarProperty Name="USER_ENAME" ColumnName="USER_ENAME" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
-                <ScalarProperty Name="MODIFY_USER" ColumnName="MODIFY_USER" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BOOK_CODE">
             <EntityTypeMapping TypeName="GSSWEBModel.BOOK_CODE">
               <MappingFragment StoreEntitySet="BOOK_CODE">
-                <ScalarProperty Name="CODE_TYPE" ColumnName="CODE_TYPE" />
-                <ScalarProperty Name="CODE_ID" ColumnName="CODE_ID" />
-                <ScalarProperty Name="CODE_TYPE_DESC" ColumnName="CODE_TYPE_DESC" />
-                <ScalarProperty Name="CODE_NAME" ColumnName="CODE_NAME" />
-                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
-                <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
-                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
                 <ScalarProperty Name="MODIFY_USER" ColumnName="MODIFY_USER" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="CODE_NAME" ColumnName="CODE_NAME" />
+                <ScalarProperty Name="CODE_TYPE_DESC" ColumnName="CODE_TYPE_DESC" />
+                <ScalarProperty Name="CODE_ID" ColumnName="CODE_ID" />
+                <ScalarProperty Name="CODE_TYPE" ColumnName="CODE_TYPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BOOK_DATA">
+            <EntityTypeMapping TypeName="GSSWEBModel.BOOK_DATA">
+              <MappingFragment StoreEntitySet="BOOK_DATA">
+                <ScalarProperty Name="MODIFY_USER" ColumnName="MODIFY_USER" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="BOOK_AMOUNT" ColumnName="BOOK_AMOUNT" />
+                <ScalarProperty Name="BOOK_KEEPER" ColumnName="BOOK_KEEPER" />
+                <ScalarProperty Name="BOOK_STATUS" ColumnName="BOOK_STATUS" />
+                <ScalarProperty Name="BOOK_NOTE" ColumnName="BOOK_NOTE" />
+                <ScalarProperty Name="BOOK_PUBLISHER" ColumnName="BOOK_PUBLISHER" />
+                <ScalarProperty Name="BOOK_BOUGHT_DATE" ColumnName="BOOK_BOUGHT_DATE" />
+                <ScalarProperty Name="BOOK_AUTHOR" ColumnName="BOOK_AUTHOR" />
+                <ScalarProperty Name="BOOK_CLASS_ID" ColumnName="BOOK_CLASS_ID" />
+                <ScalarProperty Name="BOOK_NAME" ColumnName="BOOK_NAME" />
+                <ScalarProperty Name="BOOK_ID" ColumnName="BOOK_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MEMBER_M">
+            <EntityTypeMapping TypeName="GSSWEBModel.MEMBER_M">
+              <MappingFragment StoreEntitySet="MEMBER_M">
+                <ScalarProperty Name="MODIFY_USER" ColumnName="MODIFY_USER" />
+                <ScalarProperty Name="MODIFY_DATE" ColumnName="MODIFY_DATE" />
+                <ScalarProperty Name="CREATE_USER" ColumnName="CREATE_USER" />
+                <ScalarProperty Name="CREATE_DATE" ColumnName="CREATE_DATE" />
+                <ScalarProperty Name="USER_ENAME" ColumnName="USER_ENAME" />
+                <ScalarProperty Name="USER_CNAME" ColumnName="USER_CNAME" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="BOOK_LEND_RECORD">
             <EntityTypeMapping TypeName="GSSWEBModel.BOOK_LEND_RECORD">
               <MappingFragment StoreEntitySet="BOOK_LEND_RECORD">
-                <ScalarProperty Name="IDENTITY_FILED" ColumnName="IDENTITY_FILED" />
-                <ScalarProperty Name="BOOK_ID" ColumnName="BOOK_ID" />
-                <ScalarProperty Name="KEEPER_ID" ColumnName="KEEPER_ID" />
-                <ScalarProperty Name="LEND_DATE" ColumnName="LEND_DATE" />
-                <ScalarProperty Name="CRE_DATE" ColumnName="CRE_DATE" />
-                <ScalarProperty Name="CRE_USR" ColumnName="CRE_USR" />
-                <ScalarProperty Name="MOD_DATE" ColumnName="MOD_DATE" />
                 <ScalarProperty Name="MOD_USR" ColumnName="MOD_USR" />
+                <ScalarProperty Name="MOD_DATE" ColumnName="MOD_DATE" />
+                <ScalarProperty Name="CRE_USR" ColumnName="CRE_USR" />
+                <ScalarProperty Name="CRE_DATE" ColumnName="CRE_DATE" />
+                <ScalarProperty Name="LEND_DATE" ColumnName="LEND_DATE" />
+                <ScalarProperty Name="KEEPER_ID" ColumnName="KEEPER_ID" />
+                <ScalarProperty Name="BOOK_ID" ColumnName="BOOK_ID" />
+                <ScalarProperty Name="IDENTITY_FILED" ColumnName="IDENTITY_FILED" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -350,7 +373,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="無" />

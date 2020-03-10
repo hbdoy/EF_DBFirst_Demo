@@ -26,9 +26,9 @@ namespace DemoLibraryMVC.Models
         }
     
         public virtual DbSet<BOOK_CLASS> BOOK_CLASS { get; set; }
+        public virtual DbSet<BOOK_CODE> BOOK_CODE { get; set; }
         public virtual DbSet<BOOK_DATA> BOOK_DATA { get; set; }
         public virtual DbSet<MEMBER_M> MEMBER_M { get; set; }
-        public virtual DbSet<BOOK_CODE> BOOK_CODE { get; set; }
         public virtual DbSet<BOOK_LEND_RECORD> BOOK_LEND_RECORD { get; set; }
     }
 }

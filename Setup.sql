@@ -9,38 +9,11 @@ GO
 USE [GSSWEB]
 GO
 
-/****** Object:  Table [dbo].[BOOK_CODE]    Script Date: 2017/6/26 下午 04:58:45 ******/
+/****** Object:  Table [dbo].[BOOK_CLASS]    Script Date: 2020/3/11 上午 02:08:38 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
-CREATE TABLE [dbo].[BOOK_CODE](
-	[CODE_TYPE] [nvarchar](50) NOT NULL,
-	[CODE_ID] [nvarchar](100) NOT NULL,
-	[CODE_TYPE_DESC] [nvarchar](200) NULL,
-	[CODE_NAME] [nvarchar](200) NULL,
-	[CREATE_DATE] [datetime] NULL,
-	[CREATE_USER] [nvarchar](10) NULL,
-	[MODIFY_DATE] [datetime] NULL,
-	[MODIFY_USER] [nvarchar](10) NULL
-) ON [PRIMARY]
-
-GO
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-USE [GSSWEB]
-GO
-
-/****** Object:  Table [dbo].[BOOK_CLASS]    Script Date: 2017/6/26 下午 04:58:35 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[BOOK_CLASS](
 	[BOOK_CLASS_ID] [nvarchar](4) NOT NULL,
 	[BOOK_CLASS_NAME] [nvarchar](60) NOT NULL,
@@ -53,20 +26,34 @@ CREATE TABLE [dbo].[BOOK_CLASS](
 	[BOOK_CLASS_ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-USE [GSSWEB]
-GO
-
-/****** Object:  Table [dbo].[BOOK_DATA]    Script Date: 2017/6/26 下午 04:58:52 ******/
+/****** Object:  Table [dbo].[BOOK_CODE]    Script Date: 2020/3/11 上午 02:08:38 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
+CREATE TABLE [dbo].[BOOK_CODE](
+	[CODE_TYPE] [nvarchar](50) NULL,
+	[CODE_ID] [char](1) NOT NULL,
+	[CODE_TYPE_DESC] [nvarchar](200) NULL,
+	[CODE_NAME] [nvarchar](200) NULL,
+	[CREATE_DATE] [datetime] NULL,
+	[CREATE_USER] [nvarchar](10) NULL,
+	[MODIFY_DATE] [datetime] NULL,
+	[MODIFY_USER] [nvarchar](10) NULL,
+ CONSTRAINT [PK_BOOK_CODE] PRIMARY KEY NONCLUSTERED 
+(
+	[CODE_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 
+/****** Object:  Table [dbo].[BOOK_DATA]    Script Date: 2020/3/11 上午 02:08:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE TABLE [dbo].[BOOK_DATA](
 	[BOOK_ID] [int] IDENTITY(1,1) NOT NULL,
 	[BOOK_NAME] [nvarchar](200) NOT NULL,
@@ -87,49 +74,13 @@ CREATE TABLE [dbo].[BOOK_DATA](
 	[BOOK_ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]
 ) ON [PRIMARY]
-
 GO
 
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-USE [GSSWEB]
-GO
-
-/****** Object:  Table [dbo].[MEMBER_M]    Script Date: 2017/6/1 下午 07:56:28 ******/
+/****** Object:  Table [dbo].[BOOK_LEND_RECORD]    Script Date: 2020/3/11 上午 02:08:38 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
-CREATE TABLE [dbo].[MEMBER_M](
-	[USER_ID] [nvarchar](12) NOT NULL,
-	[USER_CNAME] [nvarchar](50) NULL,
-	[USER_ENAME] [nvarchar](50) NULL,
-	[CREATE_DATE] [datetime] NULL,
-	[CREATE_USER] [nvarchar](12) NULL,
-	[MODIFY_DATE] [datetime] NULL,
-	[MODIFY_USER] [nvarchar](12) NULL,
- CONSTRAINT [PK_MEMBER_M] PRIMARY KEY CLUSTERED 
-(
-	[USER_ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-USE [GSSWEB]
-GO
-
-/****** Object:  Table [dbo].[BOOK_LEND_RECORD]    Script Date: 2019/6/5 上午 11:52:35 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dbo].[BOOK_LEND_RECORD](
 	[IDENTITY_FILED] [int] IDENTITY(1,1) NOT NULL,
 	[BOOK_ID] [int] NOT NULL,
@@ -142,9 +93,40 @@ CREATE TABLE [dbo].[BOOK_LEND_RECORD](
 ) ON [PRIMARY]
 GO
 
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/****** Object:  Table [dbo].[MEMBER_M]    Script Date: 2020/3/11 上午 02:08:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MEMBER_M](
+	[USER_ID] [nvarchar](12) NOT NULL,
+	[USER_CNAME] [nvarchar](50) NULL,
+	[USER_ENAME] [nvarchar](50) NULL,
+	[CREATE_DATE] [datetime] NULL,
+	[CREATE_USER] [nvarchar](12) NULL,
+	[MODIFY_DATE] [datetime] NULL,
+	[MODIFY_USER] [nvarchar](12) NULL,
+ CONSTRAINT [PK_MEMBER_M] PRIMARY KEY NONCLUSTERED 
+(
+	[USER_ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 
-USE [GSSWEB]
+ALTER TABLE [dbo].[BOOK_DATA]  WITH CHECK ADD  CONSTRAINT [FK_BOOK_DATA_BOOK_CLASS] FOREIGN KEY([BOOK_CLASS_ID])
+REFERENCES [dbo].[BOOK_CLASS] ([BOOK_CLASS_ID])
+GO
+ALTER TABLE [dbo].[BOOK_DATA] CHECK CONSTRAINT [FK_BOOK_DATA_BOOK_CLASS]
+GO
+ALTER TABLE [dbo].[BOOK_DATA]  WITH CHECK ADD  CONSTRAINT [FK_BOOK_DATA_BOOK_CODE] FOREIGN KEY([BOOK_STATUS])
+REFERENCES [dbo].[BOOK_CODE] ([CODE_ID])
+GO
+ALTER TABLE [dbo].[BOOK_DATA] CHECK CONSTRAINT [FK_BOOK_DATA_BOOK_CODE]
+GO
+ALTER TABLE [dbo].[BOOK_LEND_RECORD]  WITH CHECK ADD  CONSTRAINT [FK_BOOK_LEND_RECORD_BOOK_DATA] FOREIGN KEY([BOOK_ID])
+REFERENCES [dbo].[BOOK_DATA] ([BOOK_ID])
+GO
+ALTER TABLE [dbo].[BOOK_LEND_RECORD] CHECK CONSTRAINT [FK_BOOK_LEND_RECORD_BOOK_DATA]
 GO
 
 /****** Object:  Table [dbo].[SPAN_TABLE]    Script Date: 2019/6/5 上午 11:54:43 ******/
@@ -206,8 +188,8 @@ insert into BOOK_CODE ([CODE_TYPE],[CODE_ID],[CODE_TYPE_DESC],[CODE_NAME],[CREAT
 insert into BOOK_CODE ([CODE_TYPE],[CODE_ID],[CODE_TYPE_DESC],[CODE_NAME],[CREATE_DATE],[CREATE_USER],[MODIFY_DATE],[MODIFY_USER])  Values (N'BOOK_STATUS',N'B',N'書籍狀態',N'已借出','2017/06/12 00:00:00',N'kent_huang','2017/06/12 00:00:00',N'kent_huang')
 insert into BOOK_CODE ([CODE_TYPE],[CODE_ID],[CODE_TYPE_DESC],[CODE_NAME],[CREATE_DATE],[CREATE_USER],[MODIFY_DATE],[MODIFY_USER])  Values (N'BOOK_STATUS',N'U',N'書籍狀態',N'不可借出','2017/06/12 00:00:00',N'kent_huang','2017/06/12 00:00:00',N'kent_huang')
 insert into BOOK_CODE ([CODE_TYPE],[CODE_ID],[CODE_TYPE_DESC],[CODE_NAME],[CREATE_DATE],[CREATE_USER],[MODIFY_DATE],[MODIFY_USER])  Values (N'BOOK_STATUS',N'C',N'書籍狀態',N'已借出(未領)','2017/06/12 00:00:00',N'kent_huang','2017/06/12 00:00:00',N'kent_huang')
-insert into BOOK_CODE ([CODE_TYPE],[CODE_ID],[CODE_TYPE_DESC],[CODE_NAME],[CREATE_DATE],[CREATE_USER],[MODIFY_DATE],[MODIFY_USER])  Values (N'BLOOD_TYPE',N'A',N'血型',N'A型','2017/06/12 00:00:00',N'kent_huang','2017/06/12 00:00:00',N'kent_huang')
-insert into BOOK_CODE ([CODE_TYPE],[CODE_ID],[CODE_TYPE_DESC],[CODE_NAME],[CREATE_DATE],[CREATE_USER],[MODIFY_DATE],[MODIFY_USER])  Values (N'BLOOD_TYPE',N'O',N'血型',N'O型','2017/06/12 00:00:00',N'kent_huang','2017/06/12 00:00:00',N'kent_huang')
+--insert into BOOK_CODE ([CODE_TYPE],[CODE_ID],[CODE_TYPE_DESC],[CODE_NAME],[CREATE_DATE],[CREATE_USER],[MODIFY_DATE],[MODIFY_USER])  Values (N'BLOOD_TYPE',N'A',N'血型',N'A型','2017/06/12 00:00:00',N'kent_huang','2017/06/12 00:00:00',N'kent_huang')
+--insert into BOOK_CODE ([CODE_TYPE],[CODE_ID],[CODE_TYPE_DESC],[CODE_NAME],[CREATE_DATE],[CREATE_USER],[MODIFY_DATE],[MODIFY_USER])  Values (N'BLOOD_TYPE',N'O',N'血型',N'O型','2017/06/12 00:00:00',N'kent_huang','2017/06/12 00:00:00',N'kent_huang')
 GO
 
 --/***************************** BOOK_DATA ***********************************************/
