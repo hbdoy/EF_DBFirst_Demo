@@ -1,9 +1,7 @@
 ﻿using DemoLibraryMVC.Models;
 using System;
-using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
@@ -26,7 +24,7 @@ namespace ConsoleApp1
 
             // Delete Sample
             //var delItem = db.BOOK_CLASS.FirstOrDefault(m => m.BOOK_CLASS_ID == "Test");
-            //if(delItem != null)
+            //if (delItem != null)
             //{
             //    db.BOOK_CLASS.Remove(delItem);
             //}
@@ -38,6 +36,11 @@ namespace ConsoleApp1
             //var updateItem = db.BOOK_DATA.FirstOrDefault(m => m.BOOK_ID == 4);
             //var updateItem = db.BOOK_DATA.Find(4);
             //updateItem.BOOK_NAME = "新書名";
+            //db.SaveChanges();
+
+            // Update Sample2
+            //var updateItem2 = db.BOOK_DATA.FirstOrDefault(m => m.BOOK_ID == 4);
+            //db.Entry(updateItem2).State = EntityState.Modified;
             //db.SaveChanges();
 
             // -------------------------------------------
@@ -57,10 +60,10 @@ namespace ConsoleApp1
             //}
 
             // Search Sample(LINQ)
-            //var allBookData = from a in db.BOOK_DATA
-            //                  where a.BOOK_CLASS_ID == "DB"
+            //var allbookdata = from a in db.BOOK_DATA
+            //                  where a.BOOK_CLASS_ID == "db"
             //                  select a;
-            //foreach (var item in allBookData)
+            //foreach (var item in allbookdata)
             //{
             //    Console.WriteLine(item.BOOK_NAME);
             //}
@@ -92,11 +95,10 @@ namespace ConsoleApp1
             //}
 
             // Update Sample2(SQL)
-            //var updateItem2 = db.Database.ExecuteSqlCommand("UPDATE BOOK_DATA SET BOOK_NAME = '新書名2' WHERE BOOK_ID = 4");
+            //var updateItem3 = db.Database.ExecuteSqlCommand("UPDATE BOOK_DATA SET BOOK_NAME = '新書名2' WHERE BOOK_ID = 4");
 
             // -------------------------------------------
-
-
+            
 
             Console.WriteLine("Done...");
             Console.ReadKey();
