@@ -18,6 +18,7 @@ namespace DemoLibraryMVC.Models
         public GSSWEBEntities()
             : base("name=GSSWEBEntities")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -145,6 +145,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BooksController.cs" />
+    <Compile Include="Controllers\BooksEFController.cs" />
     <Compile Include="Controllers\NewBooksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -153,6 +154,7 @@
     <Compile Include="Models\Books.cs" />
     <Compile Include="Models\BooksSearchArg.cs" />
     <Compile Include="Models\BooksService.cs" />
+    <Compile Include="Models\BooksServiceEF.cs" />
     <Compile Include="Models\BOOK_CLASS.cs">
       <DependentUpon>LibraryModel.tt</DependentUpon>
     </Compile>
@@ -196,6 +198,10 @@
     <Content Include="Views\NewBooks\Details.cshtml" />
     <Content Include="Views\NewBooks\Edit.cshtml" />
     <Content Include="Views\NewBooks\Index.cshtml" />
+    <Content Include="Views\BooksEF\Index.cshtml" />
+    <Content Include="Views\BooksEF\BooksDetail.cshtml" />
+    <Content Include="Views\BooksEF\BooksUpdate.cshtml" />
+    <Content Include="Views\BooksEF\BooksInsert.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

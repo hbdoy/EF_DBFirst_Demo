@@ -1,0 +1,132 @@
+﻿@model Library.Models.BooksSearchArg
+
+@{
+    ViewBag.Title = "圖書維護";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="c_text">圖書維護</h2>
+@using (Html.BeginForm("Index", "BooksEF"))
+{
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookName, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BookName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookClassId, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BookClassId, (List<SelectListItem>)ViewBag.BookClass
+                                                                , "-- 請選擇 --", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.KeeperId, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.KeeperId, (List<SelectListItem>)ViewBag.Member
+                                                                , "-- 請選擇 --", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookStatusCode, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BookStatusCode, (List<SelectListItem>)ViewBag.BookStatus
+                                                                , "-- 請選擇 --", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
+                <input class="btn btn-primary" type="submit" value="查詢" />
+                @Html.ActionLink("清除", "index", "", new { @class = "btn btn-primary c_text" })
+                @Html.ActionLink("新增", "BooksInsert", "", new { @class = "btn btn-primary c_text" })
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="book_table">
+        @if (ViewBag.SearchResult != null)
+        {
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr class="">
+                        <th>圖書類別</th>
+                        <th width="250px">書名</th>
+                        <th>購書日期</th>
+                        <th>借閱狀態</th>
+                        <th>借閱人</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in (List<DemoLibraryMVC.Models.BOOK_DATA>)ViewBag.SearchResult)
+                    {
+                        <tr book_id='@book.BOOK_ID'>
+                            <td>@book.BOOK_CLASS.BOOK_CLASS_NAME</td>
+                            <td>
+                                @Html.ActionLink(@book.BOOK_NAME.Trim() == "" ? "無書名" : @book.BOOK_NAME
+                                    , "BooksDetail", new { id = book.BOOK_ID })
+                            </td>
+                            <td>@(book.BOOK_BOUGHT_DATE != null ? book.BOOK_BOUGHT_DATE.Value.ToString("yyyy/MM/dd") : "")</td>
+                            <td>@(book.BOOK_CODE != null ? book.BOOK_CODE.CODE_NAME : "")</td>
+                            <td>@*@(book.MEMBER_M != null ? book.MEMBER_M.USER_ENAME : "")*@</td>
+                            <td><span>借閱紀錄</span></td>
+                            <td>@Html.ActionLink("修改", "BooksUpdate", new { id = book.BOOK_ID })</td>
+                            <td>
+                                <a class="btnDelete" href="#" book_id="@book.BOOK_ID">刪除</a>
+                                @* 清除無用屬性onclick *@
+                                @* 清除無實際做用input *@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+
+
+}
+<script>$(document).ready(function () {
+        $(".btnDelete").click(function (e) {
+            e.preventDefault();
+
+            var tr = $(this).closest('tr');
+            var bookId = $(this).attr("book_id");
+            DeleteBooks(tr, bookId);
+            return false;
+        });
+    })
+
+    //刪除書籍
+    function DeleteBooks(tr, bookId) {
+        if (confirm("確定要刪除嗎")) {
+            $.ajax({
+                type: "POST",
+                url: "/Books/BooksDelete",
+                data: "BookId=" + bookId,
+                dataType: "json",
+                success: function (response) {
+                    alert(response.message);
+                    if (response.isDelete)
+                        $(tr).remove();
+                }, error: function (error) {
+                    alert("系統發生錯誤");
+                }
+            });
+        }
+
+    }</script>
+
+

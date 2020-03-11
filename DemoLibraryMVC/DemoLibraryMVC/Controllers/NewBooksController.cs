@@ -17,11 +17,6 @@ namespace DemoLibraryMVC.Controllers
         // GET: NewBooks
         public ActionResult Index()
         {
-            var c = db.BOOK_DATA.FirstOrDefault();
-
-            var g = c.BOOK_CLASS.BOOK_CLASS_NAME;
-
-            return View(db.BOOK_DATA.Where(x => x.BOOK_CLASS_ID == "DB"));
             return View(db.BOOK_DATA.ToList());
         }
 

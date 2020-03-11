@@ -1,0 +1,97 @@
+﻿@model Library.Models.Books
+
+@{
+    ViewBag.Title = "書籍明細";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="c_text">@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BookName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookAuthor, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BookAuthor, new { @class = "form-control", @disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookPublisher, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BookPublisher, new { @class = "form-control", @disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookNote, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.BookNote, new { @class = "form-control", @disabled = "disabled" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookBougthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.BookBougthDate, new { @type = "date", @class = "form-control", @disabled = "disabled" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookClass, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BookClassId, (List<SelectListItem>)ViewBag.BookClass,
+                                                     "--請選擇類別--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BookClassId, "", new { @class = "text-danger", @disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BookStatusCode, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.BookStatusCode, (List<SelectListItem>)ViewBag.BookStatus
+                                                                , "-- 請選擇 --", new { @class = "form-control", @id = "ddl_status", @disabled = "disabled" })
+            </div>
+        </div>
+
+        @if (Model.BookStatusCode == "B" || Model.BookStatusCode == "C")
+        {
+            <div id="form_keeper" class="form-group">
+                @Html.LabelFor(model => model.KeeperId, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.KeeperId, (List<SelectListItem>)ViewBag.Member
+                                                                    , "-- 請選擇 --", new { @class = "form-control", @disabled = "disabled" })
+                </div>
+            </div>
+        }
+
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("返回查詢", "Index", new { }, new { @class = "c_text" })
+</div>
+
+
+
+
+
+
+
+
