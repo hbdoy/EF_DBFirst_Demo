@@ -1,4 +1,4 @@
-﻿@model Library.Models.Books
+﻿@model DemoLibraryMVC.Models.BOOK_DATA
 
 @{
     ViewBag.Title = "書籍明細";
@@ -15,66 +15,66 @@
         <hr />
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BOOK_NAME, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BookName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.EditorFor(model => model.BOOK_NAME, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookAuthor, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BOOK_AUTHOR, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.BookAuthor, new { @class = "form-control", @disabled = "disabled" })
+                @Html.TextBoxFor(model => model.BOOK_AUTHOR, new { @class = "form-control", @disabled = "disabled" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookPublisher, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BOOK_PUBLISHER, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.BookPublisher, new { @class = "form-control", @disabled = "disabled" })
+                @Html.TextBoxFor(model => model.BOOK_PUBLISHER, new { @class = "form-control", @disabled = "disabled" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookNote, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BOOK_NOTE, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.BookNote, new { @class = "form-control", @disabled = "disabled" })
+                @Html.TextAreaFor(model => model.BOOK_NOTE, new { @class = "form-control", @disabled = "disabled" })
             </div>
         </div>
 
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookBougthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BOOK_BOUGHT_DATE, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.BookBougthDate, new { @type = "date", @class = "form-control", @disabled = "disabled" })
+                @Html.TextBoxFor(model => model.BOOK_BOUGHT_DATE, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control", @disabled = "disabled" })
 
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookClass, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+            @Html.LabelFor(model => model.BOOK_CLASS_ID, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.BookClassId, (List<SelectListItem>)ViewBag.BookClass,
+                @Html.DropDownListFor(model => model.BOOK_CLASS_ID, (List<SelectListItem>)ViewBag.BookClass,
                                                      "--請選擇類別--", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookClassId, "", new { @class = "text-danger", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.BOOK_CLASS_ID, "", new { @class = "text-danger", @disabled = "disabled" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookStatusCode, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+            @Html.LabelFor(model => model.BOOK_STATUS, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.BookStatusCode, (List<SelectListItem>)ViewBag.BookStatus
+                @Html.DropDownListFor(model => model.BOOK_STATUS, (List<SelectListItem>)ViewBag.BookStatus
                                                                 , "-- 請選擇 --", new { @class = "form-control", @id = "ddl_status", @disabled = "disabled" })
             </div>
         </div>
 
-        @if (Model.BookStatusCode == "B" || Model.BookStatusCode == "C")
+        @if (Model.BOOK_STATUS == "B" || Model.BOOK_STATUS == "C")
         {
             <div id="form_keeper" class="form-group">
-                @Html.LabelFor(model => model.KeeperId, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
+                @Html.LabelFor(model => model.BOOK_KEEPER, htmlAttributes: new { @class = "control-label col-md-2 c_text" })
                 <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.KeeperId, (List<SelectListItem>)ViewBag.Member
+                    @Html.DropDownListFor(model => model.BOOK_KEEPER, (List<SelectListItem>)ViewBag.Member
                                                                     , "-- 請選擇 --", new { @class = "form-control", @disabled = "disabled" })
                 </div>
             </div>

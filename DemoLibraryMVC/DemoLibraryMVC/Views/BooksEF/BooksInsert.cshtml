@@ -1,4 +1,4 @@
-﻿@model Library.Models.Books
+﻿@model DemoLibraryMVC.Models.BOOK_DATA
 
 @{
     ViewBag.Title = "書籍新增";
@@ -23,44 +23,44 @@
         <div class="form-group">
             <div class="control-label col-md-2 c_text">
                 <span class="text-danger ">*</span>
-                @Html.LabelFor(model => model.BookName)
+                @Html.LabelFor(model => model.BOOK_NAME)
             </div>
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.BookName, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookName, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.BOOK_NAME, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BOOK_NAME, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="control-label col-md-2 c_text">
                 <span class="text-danger ">*</span>
-                @Html.LabelFor(model => model.BookAuthor)
+                @Html.LabelFor(model => model.BOOK_AUTHOR)
             </div>
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.BookAuthor, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookAuthor, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.BOOK_AUTHOR, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BOOK_AUTHOR, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="control-label col-md-2 c_text">
                 <span class="text-danger ">*</span>
-                @Html.LabelFor(model => model.BookPublisher)
+                @Html.LabelFor(model => model.BOOK_PUBLISHER)
             </div>
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.BookPublisher, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookPublisher, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.BOOK_PUBLISHER, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BOOK_PUBLISHER, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="control-label col-md-2 c_text">
                 <span class="text-danger ">*</span>
-                @Html.LabelFor(model => model.BookNote)
+                @Html.LabelFor(model => model.BOOK_NOTE)
             </div>
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.BookNote, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookNote, "", new { @class = "text-danger" })
+                @Html.TextAreaFor(model => model.BOOK_NOTE, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BOOK_NOTE, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -69,23 +69,23 @@
         <div class="form-group">
             <div class="control-label col-md-2 c_text">
                 <span class="text-danger ">*</span>
-                @Html.LabelFor(model => model.BookBougthDate)
+                @Html.LabelFor(model => model.BOOK_BOUGHT_DATE)
             </div>
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.BookBougthDate, new { @type = "date", @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookBougthDate, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.BOOK_BOUGHT_DATE, new { @type = "date", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.BOOK_BOUGHT_DATE, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="control-label col-md-2 c_text">
                 <span class="text-danger ">*</span>
-                @Html.LabelFor(model => model.BookClass)
+                @Html.LabelFor(model => model.BOOK_CLASS_ID)
             </div>
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.BookClassId, (List<SelectListItem>)ViewBag.BookClass,
+                @Html.DropDownListFor(model => model.BOOK_CLASS_ID, (List<SelectListItem>)ViewBag.BookClass,
                                                      "--請選擇類別--", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookClassId, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.BOOK_CLASS_ID, "", new { @class = "text-danger" })
             </div>
         </div>
 

@@ -2,7 +2,6 @@
 using Library.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -41,15 +40,12 @@ namespace Library.Controllers
             return View("Index");
         }
 
-        ///// <summary>
-        ///// 書籍明細查詢畫面
-        ///// </summary>
+        /// <summary>
+        /// 書籍明細查詢畫面
+        /// </summary>
         [HttpGet]
         public ActionResult BooksDetail(int id)
         {
-            //HtmlEncode
-            //id = Server.HtmlEncode(id);
-
             SetDropDownListItmes();
             return View("BooksDetail", GetBookDetail(id));
         }
@@ -60,9 +56,6 @@ namespace Library.Controllers
         [HttpGet]
         public ActionResult BooksUpdate(int id)
         {
-            //HtmlEncode
-            //id = Server.HtmlEncode(id);
-
             SetDropDownListItmes();
             return View("BooksUpdate", GetBookDetail(id));
         }
@@ -71,15 +64,13 @@ namespace Library.Controllers
         /// 書籍修改
         /// </summary>
         [HttpPost]
-        public ActionResult BooksUpdate(Models.Books book, int id)
+        [ValidateInput(false)]
+        public ActionResult BooksUpdate(BOOK_DATA book, int id)
         {
-            ////HtmlEncode
-            //id = Server.HtmlEncode(id);
             ModelHtmlEncode(book);
-
-            book.BookId = id;
+            book.BOOK_ID = id;
             //驗證以借閱時借閱者不得為空
-            if (book.BookStatusCode != "A" && book.BookStatusCode != "U" && book.KeeperId == null)
+            if (book.BOOK_STATUS != "A" && book.BOOK_STATUS != "U" && book.BOOK_KEEPER == null)
             {
                 ViewBag.UpdateMessage = "已借閱 不得無借閱者";
                 ViewBag.keeperAlarm = "";
@@ -116,7 +107,8 @@ namespace Library.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult BooksInsert(Models.Books book)
+        [ValidateInput(false)]
+        public ActionResult BooksInsert(BOOK_DATA book)
         {
             //HtmlEncode
             ModelHtmlEncode(book);
@@ -140,6 +132,7 @@ namespace Library.Controllers
         /// 刪除書籍
         /// </summary>
         [HttpPost()]
+        [ValidateInput(false)]
         public JsonResult BooksDelete(string bookId)
         {
             //HtmlEncode
@@ -168,18 +161,13 @@ namespace Library.Controllers
         /// <summary>
         /// 以BookId搜尋此書
         /// </summary>
-        public Models.Books GetBookDetail(int id)
+        public BOOK_DATA GetBookDetail(int id)
         {
-            //HtmlEncode
-            //id = Server.HtmlEncode(id);
-
-            //Models.BooksSearchArg arg = new Models.BooksSearchArg { BookId = Convert.ToInt32(id) };
-            Models.BooksSearchArg arg = new Models.BooksSearchArg { BookId = id };
-            Models.Books books = this.booksService.GetBooks(arg).FirstOrDefault();
-
-
-            ModelHtmlDecode(books);
-            return books;
+            BooksSearchArg arg = new BooksSearchArg { BookId = id };
+            BOOK_DATA book = this.booksService.GetBooks(arg).FirstOrDefault();
+            
+            ModelHtmlDecode(book);
+            return book;
         }
 
         /// <summary>
@@ -232,6 +220,15 @@ namespace Library.Controllers
             arg.BookName = Server.HtmlEncode(arg.BookName);
             arg.BookStatusCode = Server.HtmlEncode(arg.BookStatusCode);
             arg.KeeperId = Server.HtmlEncode(arg.KeeperId);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                booksService.db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

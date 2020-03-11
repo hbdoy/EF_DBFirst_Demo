@@ -185,6 +185,8 @@
     <Compile Include="Models\MEMBER_M.cs">
       <DependentUpon>LibraryModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MetaData\Metadata.cs" />
+    <Compile Include="Models\MetaData\PartialClasses.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

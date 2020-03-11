@@ -80,7 +80,7 @@
                             </td>
                             <td>@(book.BOOK_BOUGHT_DATE != null ? book.BOOK_BOUGHT_DATE.Value.ToString("yyyy/MM/dd") : "")</td>
                             <td>@(book.BOOK_CODE != null ? book.BOOK_CODE.CODE_NAME : "")</td>
-                            <td>@*@(book.MEMBER_M != null ? book.MEMBER_M.USER_ENAME : "")*@</td>
+                            <td>@(book.MEMBER_M != null ? book.MEMBER_M.USER_ENAME : "")</td>
                             <td><span>借閱紀錄</span></td>
                             <td>@Html.ActionLink("修改", "BooksUpdate", new { id = book.BOOK_ID })</td>
                             <td>
@@ -114,7 +114,7 @@
         if (confirm("確定要刪除嗎")) {
             $.ajax({
                 type: "POST",
-                url: "/Books/BooksDelete",
+                url: "/BooksEF/BooksDelete",
                 data: "BookId=" + bookId,
                 dataType: "json",
                 success: function (response) {
