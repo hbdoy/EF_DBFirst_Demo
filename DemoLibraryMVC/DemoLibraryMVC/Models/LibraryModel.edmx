@@ -48,14 +48,9 @@
           <Property Name="MODIFY_DATE" Type="datetime" />
           <Property Name="MODIFY_USER" Type="nvarchar" MaxLength="12" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'GSSWEB.dbo.BOOK_LEND_RECORD' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="BOOK_LEND_RECORD">
           <Key>
             <PropertyRef Name="IDENTITY_FILED" />
-            <PropertyRef Name="BOOK_ID" />
-            <PropertyRef Name="KEEPER_ID" />
-            <PropertyRef Name="LEND_DATE" />
           </Key>
           <Property Name="IDENTITY_FILED" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BOOK_ID" Type="int" Nullable="false" />
@@ -130,19 +125,8 @@
           <EntitySet Name="BOOK_CLASS" EntityType="Self.BOOK_CLASS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BOOK_CODE" EntityType="Self.BOOK_CODE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BOOK_DATA" EntityType="Self.BOOK_DATA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BOOK_LEND_RECORD" EntityType="Self.BOOK_LEND_RECORD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MEMBER_M" EntityType="Self.MEMBER_M" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="BOOK_LEND_RECORD" EntityType="Self.BOOK_LEND_RECORD" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [BOOK_LEND_RECORD].[IDENTITY_FILED] AS [IDENTITY_FILED], 
-    [BOOK_LEND_RECORD].[BOOK_ID] AS [BOOK_ID], 
-    [BOOK_LEND_RECORD].[KEEPER_ID] AS [KEEPER_ID], 
-    [BOOK_LEND_RECORD].[LEND_DATE] AS [LEND_DATE], 
-    [BOOK_LEND_RECORD].[CRE_DATE] AS [CRE_DATE], 
-    [BOOK_LEND_RECORD].[CRE_USR] AS [CRE_USR], 
-    [BOOK_LEND_RECORD].[MOD_DATE] AS [MOD_DATE], 
-    [BOOK_LEND_RECORD].[MOD_USR] AS [MOD_USR]
-    FROM [dbo].[BOOK_LEND_RECORD] AS [BOOK_LEND_RECORD]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_BOOK_DATA_BOOK_CLASS" Association="Self.FK_BOOK_DATA_BOOK_CLASS">
             <End Role="BOOK_CLASS" EntitySet="BOOK_CLASS" />
             <End Role="BOOK_DATA" EntitySet="BOOK_DATA" />
@@ -252,9 +236,6 @@
         <EntityType Name="BOOK_LEND_RECORD">
           <Key>
             <PropertyRef Name="IDENTITY_FILED" />
-            <PropertyRef Name="BOOK_ID" />
-            <PropertyRef Name="KEEPER_ID" />
-            <PropertyRef Name="LEND_DATE" />
           </Key>
           <Property Name="IDENTITY_FILED" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="BOOK_ID" Type="Int32" Nullable="false" />
